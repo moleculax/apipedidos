@@ -9,6 +9,7 @@ Sistema de gestión de pedidos desarrollado con **Java** y **Spring Boot**, util
 *   **Spring Data JPA**: ORM para persistencia y mapeo de entidades.
 *   **Maven**: Gestión de dependencias y ciclo de vida del proyecto.
 *   **Lombok**: Reducción de código repetitivo (Boilerplate).
+*  **JPA/Hibernate**: Implementación de JPA para la gestión de entidades y relaciones.
 
 ##  Configuración e Instalación
 
