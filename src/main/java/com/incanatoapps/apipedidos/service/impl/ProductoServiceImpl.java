@@ -29,7 +29,7 @@ public class ProductoServiceImpl implements ProductoService {
     @Transactional(readOnly = true)
     public Page<ProductoDTO> findAll(Pageable pageable, String search) {
         Page<Producto> productos;
-        //Alt+ 124
+
         if(search==null || search.trim().isEmpty()){
             productos= repository.findAll(pageable);
         }else{
@@ -42,13 +42,18 @@ public class ProductoServiceImpl implements ProductoService {
                 pageable,
                 productos.getTotalElements()
         );
+      //  getContent() devuelve la lista de entidades Producto de la página actual.
+        //  Luego, se utiliza stream() para procesar cada entidad, mapeándola a un DTO utilizando
+        //  el método toDTO del mapper. Finalmente, se recopilan los DTOs
+        //  en una lista con collect(Collectors.toList()) y se crea un nuevo PageImpl con esa lista,
+        //  el pageable original y el total de elementos.
     }
 
     @Override
     @Transactional(readOnly = true)
     public ProductoDTO findById(Long id) {
         Producto entidad= repository.findById(id).orElseThrow(
-                ()->new NoDataFoundException("No existe un registro con ese ID."));
+                ()->new NoDataFoundException("No existe un registro con  el ID ."));
         return mapper.toDTO(entidad);
     }
 
@@ -75,7 +80,7 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public void delete(Long id) {
         Producto entidad=repository.findById(id).orElseThrow(
-                ()->new NoDataFoundException("No existe un registro con ese ID."));
+                ()->new NoDataFoundException("No existe un registro con el ID."));
         repository.delete(entidad);
     }
 }
