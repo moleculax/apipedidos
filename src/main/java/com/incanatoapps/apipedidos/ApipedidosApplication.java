@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ApipedidosApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(ApipedidosApplication.class, args);
+
 	}
 
 }
