@@ -20,3 +20,13 @@ Sistema de gestión de pedidos desarrollado con **Java** y **Spring Boot**, util
 ### 2. Configuración de Base de Datos
 Asegúrate de que tu archivo `src/main/resources/application.properties` contenga la configuración correcta:
 
+# Limpiar y compilar el proyecto
+mvn clean install
+# Ejecutar la aplicación
+mvn spring-boot:run
+
+---
+
+🔗 **Autor:** [https://moleculaxapp.vercel.app/](https://moleculaxapp.vercel.app/)
+
+**Licencia:** MIT
