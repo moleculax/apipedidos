@@ -1,4 +1,4 @@
-# 📦 API Pedidos (Spring Boot + PostgreSQL)
+# 📦 API Pedidos, en Desarrollo (Spring Boot + PostgreSQL)
 
 Sistema de gestión de pedidos desarrollado con **Java** y **Spring Boot**, utilizando **PostgreSQL** como motor de base de datos relacional.
 
