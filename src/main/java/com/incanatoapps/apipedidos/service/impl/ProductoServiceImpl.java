@@ -52,7 +52,7 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     @Transactional(readOnly = true)
     public ProductoDTO findById(Long id) {
-        // Evaluar bi esto...
+        // Evaluar bien esto...
         Producto entidad= repository.findById(id).orElseThrow(
                 ()->new NoDataFoundException("No existe un registro con  el ID ."));
         return mapper.toDTO(entidad);
