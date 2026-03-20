@@ -3,6 +3,10 @@ package com.incanatoapps.apipedidos.exception;
 import com.incanatoapps.apipedidos.dto.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -34,5 +38,20 @@ public class ErrorHandlerConfig extends ResponseEntityExceptionHandler {
         ApiResponse<?> response = new ApiResponse<>(null, false, "Internal server error");
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<?> handleBadCredentials(BadCredentialsException e, WebRequest request){
+        ApiResponse<?> response = new ApiResponse<>(null, false, e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
 
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<?> handleAuthorizedDenied(AuthorizationDeniedException e, WebRequest request){
+        ApiResponse<?> response = new ApiResponse<>(null, false, "Acceso denegado: no tiene permisos para esta acción");
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<?> handleUsernameNotFound(UsernameNotFoundException e, WebRequest request){
+        ApiResponse<?> response = new ApiResponse<>(null, false, e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus. UNAUTHORIZED);
+    }
 }

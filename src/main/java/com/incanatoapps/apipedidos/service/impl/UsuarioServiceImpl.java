@@ -12,6 +12,7 @@ import com.incanatoapps.apipedidos.validator.UsuarioValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,10 +23,12 @@ import java.util.stream.Collectors;
 public class UsuarioServiceImpl implements UsuarioService {
     private final UsuarioRepository repository;
     private final UsuarioMapper mapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioServiceImpl(UsuarioRepository repository, UsuarioMapper mapper){
+    public UsuarioServiceImpl(UsuarioRepository repository, UsuarioMapper mapper, PasswordEncoder passwordEncoder) {
         this.repository=repository;
         this.mapper=mapper;
+        this.passwordEncoder=passwordEncoder;
     }
     @Override
     @Transactional(readOnly = true)
@@ -63,25 +66,46 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public UsuarioDTO create(UsuarioDTO obj) {
         UsuarioValidator.save(obj);
+
+
         if(repository.findByEmail(obj.getEmail()).isPresent()){
             throw new ValidateException("El email ya existe en el sistema, No procede.");
         }
+        // codifico el password
+        Usuario usuario= mapper.toEntity(obj);
+        usuario.setPassword(passwordEncoder.encode(obj.getPassword()));
+
 
         Usuario entidad=mapper.toEntity(obj);
-        Usuario saved=repository.save(entidad);
+        Usuario saved=repository.save(usuario);
         return mapper.toDTO(saved);
     }
 
     @Override
     public UsuarioDTO update(Integer id, UsuarioDTO obj) {
+
         UsuarioValidator.save(obj);
-        Usuario entidad=mapper.toEntity(obj);
-        if(repository.existsById(id)){
-            entidad.setId(id);
-            Usuario saved=repository.save(entidad);
-            return mapper.toDTO(saved);
+        Usuario usuarioActual= repository.findById(id)
+                .orElseThrow(() -> new NoDataFoundException("No existe un registro con  el ID ."));
+
+        Usuario entidad = mapper.toEntity(obj);
+        usuarioActual.setEmail(entidad.getEmail());
+        usuarioActual.setActivo(entidad.isActivo());
+        usuarioActual.setRoles(entidad.getRoles());
+
+        if(obj.getPassword()!=null && !obj.getPassword().isEmpty()){
+            usuarioActual.setPassword(passwordEncoder.encode(obj.getPassword()));
         }
-        return null;
+
+        Usuario saved=repository.save(usuarioActual);
+        return mapper.toDTO(saved);
+
+//        if(repository.existsById(id)){
+//            entidad.setId(id);
+//            Usuario saved=repository.save(entidad);
+//            return mapper.toDTO(saved);
+//        }
+//        return null;
     }
 
     @Override
