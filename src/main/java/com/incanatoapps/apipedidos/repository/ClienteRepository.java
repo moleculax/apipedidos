@@ -7,11 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ClienteRepository extends JpaRepository<Cliente, Long> {
-
+public interface ClienteRepository  extends JpaRepository<Cliente, Long> {
     Cliente findByNumeroDocumento(String numeroDocumento);
-
-    Page<Cliente> findByNumeroDocumentoContainingIgnoreCase(Pageable pageable, String nombre);
-
-
+    Page<Cliente> findByNombreContainingIgnoreCase(Pageable pageable, String nombre);
 }

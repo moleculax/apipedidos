@@ -1,6 +1,5 @@
 package com.incanatoapps.apipedidos.service;
 
-
 import com.incanatoapps.apipedidos.exception.NoDataFoundException;
 import com.incanatoapps.apipedidos.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +15,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-
         return usuarioRepository.findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException("Usuario no encontrado con email: " + email));
     }
-
 }
-

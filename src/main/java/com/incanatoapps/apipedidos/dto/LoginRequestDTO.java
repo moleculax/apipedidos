@@ -1,6 +1,5 @@
 package com.incanatoapps.apipedidos.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,4 +13,3 @@ public class LoginRequestDTO {
     private String email;
     private String password;
 }
-

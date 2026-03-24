@@ -1,7 +1,6 @@
 package com.incanatoapps.apipedidos.service.impl;
 
 import com.incanatoapps.apipedidos.dto.UsuarioDTO;
-import com.incanatoapps.apipedidos.entity.Cliente;
 import com.incanatoapps.apipedidos.entity.Usuario;
 import com.incanatoapps.apipedidos.exception.NoDataFoundException;
 import com.incanatoapps.apipedidos.exception.ValidateException;
@@ -25,7 +24,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     private final UsuarioMapper mapper;
     private final PasswordEncoder passwordEncoder;
 
-    public UsuarioServiceImpl(UsuarioRepository repository, UsuarioMapper mapper, PasswordEncoder passwordEncoder) {
+    public UsuarioServiceImpl(UsuarioRepository repository, UsuarioMapper mapper, PasswordEncoder passwordEncoder){
         this.repository=repository;
         this.mapper=mapper;
         this.passwordEncoder=passwordEncoder;
@@ -33,8 +32,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     @Transactional(readOnly = true)
     public Page<UsuarioDTO> findAll(Pageable pageable, String search) {
-        Page<Usuario> usuarios = repository.findAll(pageable);
-
+        Page<Usuario> usuarios;
+        //Alt+ 124
         if(search==null || search.trim().isEmpty()){
             usuarios= repository.findAll(pageable);
         }else{
@@ -47,74 +46,54 @@ public class UsuarioServiceImpl implements UsuarioService {
                 pageable,
                 usuarios.getTotalElements()
         );
-      //  getContent() devuelve la lista de entidades Producto de la página actual.
-        //  Luego, se utiliza stream() para procesar cada entidad, mapeándola a un DTO utilizando
-        //  el método toDTO del mapper. Finalmente, se recopilan los DTOs
-        //  en una lista con collect(Collectors.toList()) y se crea un nuevo PageImpl con esa lista,
-        //  el pageable original y el total de elementos.
     }
 
     @Override
     @Transactional(readOnly = true)
     public UsuarioDTO findById(Integer id) {
-        // Evaluar bien esto...
         Usuario entidad= repository.findById(id).orElseThrow(
-                ()->new NoDataFoundException("No existe un registro con  el ID ."));
+                ()->new NoDataFoundException("No existe un registro con ese ID."));
         return mapper.toDTO(entidad);
     }
 
     @Override
     public UsuarioDTO create(UsuarioDTO obj) {
         UsuarioValidator.save(obj);
-
-
-        if(repository.findByEmail(obj.getEmail()).isPresent()){
-            throw new ValidateException("El email ya existe en el sistema, No procede.");
+        if (repository.findByEmail(obj.getEmail()).isPresent())          {
+            throw new ValidateException("El email ya está registrado");
         }
-        // codifico el password
-        Usuario usuario= mapper.toEntity(obj);
+        Usuario usuario=mapper.toEntity(obj);
         usuario.setPassword(passwordEncoder.encode(obj.getPassword()));
-
-
-        Usuario entidad=mapper.toEntity(obj);
         Usuario saved=repository.save(usuario);
         return mapper.toDTO(saved);
     }
 
     @Override
     public UsuarioDTO update(Integer id, UsuarioDTO obj) {
-
         UsuarioValidator.save(obj);
-        Usuario usuarioActual= repository.findById(id)
-                .orElseThrow(() -> new NoDataFoundException("No existe un registro con  el ID ."));
+
+        Usuario usuarioActual = repository.findById(id)
+                .orElseThrow(() -> new NoDataFoundException("No existe un registro con ese ID"));
 
         Usuario entidad = mapper.toEntity(obj);
+
+        // Actualizar campos directamente en la entidad existente
         usuarioActual.setEmail(entidad.getEmail());
         usuarioActual.setActivo(entidad.isActivo());
         usuarioActual.setRoles(entidad.getRoles());
 
-        if(obj.getPassword()!=null && !obj.getPassword().isEmpty()){
+        if (obj.getPassword() != null && !obj.getPassword().isEmpty()) {
             usuarioActual.setPassword(passwordEncoder.encode(obj.getPassword()));
         }
 
-        Usuario saved=repository.save(usuarioActual);
+        Usuario saved = repository.save(usuarioActual);
         return mapper.toDTO(saved);
-
-//        if(repository.existsById(id)){
-//            entidad.setId(id);
-//            Usuario saved=repository.save(entidad);
-//            return mapper.toDTO(saved);
-//        }
-//        return null;
     }
 
     @Override
     public void delete(Integer id) {
         Usuario entidad=repository.findById(id).orElseThrow(
-                ()->new NoDataFoundException("No existe un registro con el ID."));
+                ()->new NoDataFoundException("No existe un registro con ese ID."));
         repository.delete(entidad);
     }
-
-
-
-} // END CLASS
+}

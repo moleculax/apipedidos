@@ -15,9 +15,7 @@ import java.util.stream.Collectors;
 public class UsuarioMapper extends GenericMapper<Usuario, UsuarioDTO> {
     @Override
     public UsuarioDTO toDTO(Usuario entity) {
-        if(entity==null){
-            return null;
-        }
+        if(entity==null) return null;
         List<RolDTO> rolesDto = entity.getRoles().stream()
                 .map(rol -> new RolDTO(rol.getId(), rol.getNombre()))
                 .collect(Collectors.toList());
@@ -32,9 +30,7 @@ public class UsuarioMapper extends GenericMapper<Usuario, UsuarioDTO> {
 
     @Override
     public Usuario toEntity(UsuarioDTO dto) {
-        if (dto == null){
-            return null;
-        }
+        if (dto == null) return null;
 
         Set<Rol> roles = dto.getRoles() != null
                 ? dto.getRoles().stream()

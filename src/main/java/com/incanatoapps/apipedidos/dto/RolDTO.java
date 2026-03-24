@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class RolDTO {
-    private int id;
+    private Integer id;
     private String nombre;
-
 }

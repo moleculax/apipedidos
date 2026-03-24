@@ -37,42 +37,36 @@ public class Usuario implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "rol_id"))
     private Set<Rol> roles = new HashSet<>();
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-       // return List.of();
         return roles.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLES_"+role.getNombre()))
+                .map(rol -> new SimpleGrantedAuthority("ROLE_"+rol.getNombre()))
                 .collect(Collectors.toSet());
-
     }
 
     @Override
     public String getUsername() {
-        //return "";
         return email;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        //return UserDetails.super.isAccountNonExpired();
         return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        //return UserDetails.super.isAccountNonLocked();
         return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        //return UserDetails.super.isCredentialsNonExpired();
         return true;
     }
 
     @Override
     public boolean isEnabled() {
-        //return UserDetails.super.isEnabled();
         return activo;
     }
 }

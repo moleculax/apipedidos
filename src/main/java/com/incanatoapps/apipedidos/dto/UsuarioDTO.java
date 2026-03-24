@@ -15,6 +15,10 @@ public class UsuarioDTO {
     private Integer id;
     private String email;
     private String password;
-    private boolean activo;
+    private Boolean activo;
     private List<RolDTO> roles;
+
+    public boolean isActivo(){
+        return activo;
+    }
 }
