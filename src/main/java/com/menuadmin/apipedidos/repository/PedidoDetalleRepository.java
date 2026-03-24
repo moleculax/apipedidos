@@ -1,0 +1,10 @@
+package com.menuadmin.apipedidos.repository;
+
+import com.menuadmin.apipedidos.entity.PedidoDetalle;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface PedidoDetalleRepository extends JpaRepository<PedidoDetalle, Long> {
+
+}
