@@ -1,0 +1,42 @@
+package com.menuadmin.apipedidos.mapper;
+
+import com.menuadmin.apipedidos.dto.ClienteDTO;
+import com.menuadmin.apipedidos.entity.Cliente;
+import com.menuadmin.apipedidos.entity.TipoDocumento;
+import org.springframework.stereotype.Component;
+
+@Component
+public class ClienteMapper extends GenericMapper<Cliente, ClienteDTO> {
+
+    @Override
+    public ClienteDTO toDTO(Cliente entity) {
+        if(entity==null){
+            return null;
+        }
+        return ClienteDTO.builder()
+                .id(entity.getId())
+                .nombre(entity.getNombre())
+                .tipoDocumento(entity.getTipoDocumento().getDescripcion())
+                .numeroDocumento(entity.getNumeroDocumento())
+                .direccion(entity.getDireccion())
+                .telefono(entity.getTelefono())
+                .email(entity.getEmail())
+                .build();
+    }
+
+    @Override
+    public Cliente toEntity(ClienteDTO dto) {
+        if(dto==null){
+            return null;
+        }
+        return Cliente.builder()
+                .id(dto.getId())
+                .nombre(dto.getNombre())
+                .tipoDocumento(dto.getTipoDocumento() != null ? TipoDocumento.valueOf(dto.getTipoDocumento()): null)
+                .numeroDocumento(dto.getNumeroDocumento())
+                .direccion(dto.getDireccion())
+                .telefono(dto.getTelefono())
+                .email(dto.getEmail())
+                .build();
+    }
+}
