@@ -8,7 +8,7 @@
 		<version>4.0.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.incanatoapps</groupId>
+	<groupId>com.manuadmin</groupId>
 	<artifactId>apipedidos</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>apipedidos</name>
