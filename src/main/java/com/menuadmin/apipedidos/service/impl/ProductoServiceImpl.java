@@ -28,21 +28,13 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     @Transactional(readOnly = true)
     public Page<ProductoDTO> findAll(Pageable pageable, String search) {
-        Page<Producto> productos;
-        //Alt+ 124
-        if(search==null || search.trim().isEmpty()){
-            productos= repository.findAll(pageable);
-        }else{
-            productos= repository.findByNombreContainingIgnoreCase(pageable, search);
-        }
-        return new PageImpl<>(
-              productos.getContent().stream()
-                      .map(mapper::toDTO)
-                      .collect(Collectors.toList()),
-                pageable,
-                productos.getTotalElements()
-        );
+        Page<Producto> productos=(search==null || search.trim().isEmpty())
+                ? repository.findAll(pageable)
+                : repository.findByNombreContainingIgnoreCase(pageable, search);
+
+        return productos.map(mapper::toDTO);
     }
+
 
     @Override
     @Transactional(readOnly = true)
@@ -63,19 +55,21 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public ProductoDTO update(Long id, ProductoDTO obj) {
         ProductoValidator.save(obj);
-        Producto entidad=mapper.toEntity(obj);
-        if(repository.existsById(id)){
-            entidad.setId(id);
-            Producto saved=repository.save(entidad);
-            return mapper.toDTO(saved);
-        }
-        return null;
+        Producto entidad = repository.findById(id).orElseThrow(()->new NoDataFoundException("No existe un registro con ese ID."));
+        entidad.setCodigo(obj.getCodigo());
+        entidad.setNombre(obj.getNombre());
+        entidad.setPrecioUnitario(obj.getPrecioUnitario());
+        entidad.setUnidadId(obj.getUnidadId());
+
+        Producto saved=repository.save(entidad);
+        return mapper.toDTO(saved);
     }
 
     @Override
     public void delete(Long id) {
-        Producto entidad=repository.findById(id).orElseThrow(
-                ()->new NoDataFoundException("No existe un registro con ese ID."));
-        repository.delete(entidad);
+        if(!repository.existsById(id)){
+            throw new NoDataFoundException("No existe un registro con ese ID.");
+        }
+        repository.deleteById(id);
     }
 }

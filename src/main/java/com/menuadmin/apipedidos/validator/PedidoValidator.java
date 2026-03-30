@@ -27,7 +27,7 @@ public class PedidoValidator {
             throw new ValidateException("El correlativo es requerido");
         }
 
-        // Validar total
+        // Validar total se comenta porque se calcula en: PedidosServiceImp
         //if (pedido.getTotal() == null || pedido.getTotal().compareTo(BigDecimal.ZERO) <= 0) {
         //    throw new ValidateException("El total del pedido debe ser mayor a cero");
         //}

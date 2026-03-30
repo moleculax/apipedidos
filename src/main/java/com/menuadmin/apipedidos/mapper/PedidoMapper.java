@@ -11,12 +11,14 @@ import java.util.stream.Collectors;
 
 @Component
 public class PedidoMapper extends GenericMapper<Pedido, PedidoDTO> {
-    @Autowired
+    @Autowired // Hago inyección de dependencias
     private PedidoDetalleMapper detalleMapper;
 
     @Override
     public PedidoDTO toDTO(Pedido entity) {
-        if(entity== null) return null;
+        if(entity== null) {
+            return null;
+        }
         return PedidoDTO.builder()
                 .id(entity.getId())
                 .fecha(entity.getFecha())
@@ -37,8 +39,15 @@ public class PedidoMapper extends GenericMapper<Pedido, PedidoDTO> {
 
     @Override
     public Pedido toEntity(PedidoDTO dto) {
-        if(dto==null) return null;
-        Pedido pedido=Pedido.builder()
+        if(dto==null) {
+            return null;
+        }
+        /*
+            .builder() se utiliza para implementar
+            el Patrón de Diseño Builder, cuyo objetivo es facilitar la creación
+            de objetos complejos de una manera limpia y legible.
+         */
+        Pedido pedido = Pedido.builder()
                 .id(dto.getId())
                 .serie(dto.getSerie())
                 .correlativo(dto.getCorrelativo())

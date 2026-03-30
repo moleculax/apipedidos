@@ -57,7 +57,7 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public PedidoDTO create(PedidoDTO obj) {
         PedidoValidator.save(obj);
-        Pedido entidad=mapper.toEntity(obj);
+        Pedido entidad = mapper.toEntity(obj);
         entidad.setFecha(LocalDate.now());
         BigDecimal total = obj.getDetalles().stream()
                 .map(item -> item.getPrecioUnitario().multiply(BigDecimal.valueOf(item.getCantidad())))
