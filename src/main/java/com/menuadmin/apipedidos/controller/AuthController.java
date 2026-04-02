@@ -1,6 +1,6 @@
 package com.menuadmin.apipedidos.controller;
 
-import com.menuadmin.apipedidos.dto.ApiResponse;
+import com.menuadmin.apipedidos.dto.WrapperResponse;
 import com.menuadmin.apipedidos.dto.AuthResponseDTO;
 import com.menuadmin.apipedidos.dto.LoginRequestDTO;
 import com.menuadmin.apipedidos.service.AuthService;
@@ -19,7 +19,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<AuthResponseDTO>> login(@RequestBody LoginRequestDTO request) {
-        return new ApiResponse<>(authService.login(request),true,"success").createResponse(HttpStatus.OK);
+    public ResponseEntity<WrapperResponse<AuthResponseDTO>> login(@RequestBody LoginRequestDTO request) {
+        return new WrapperResponse<>(authService.login(request),true,"success").createResponse(HttpStatus.OK);
     }
 }

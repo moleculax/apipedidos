@@ -40,7 +40,8 @@ public class ProductoServiceImpl implements ProductoService {
     @Transactional(readOnly = true)
     public ProductoDTO findById(Long id) {
         Producto entidad= repository.findById(id).orElseThrow(
-                ()->new NoDataFoundException("No existe un registro con ese ID."));
+                ()->new NoDataFoundException("No existe un registro con ese ID.")
+        );
         return mapper.toDTO(entidad);
     }
 
@@ -55,13 +56,15 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public ProductoDTO update(Long id, ProductoDTO obj) {
         ProductoValidator.save(obj);
-        Producto entidad = repository.findById(id).orElseThrow(()->new NoDataFoundException("No existe un registro con ese ID."));
+        Producto entidad = repository.findById(id).orElseThrow(
+                ()->new NoDataFoundException("No existe un registro con ese ID.")
+        );
         entidad.setCodigo(obj.getCodigo());
         entidad.setNombre(obj.getNombre());
         entidad.setPrecioUnitario(obj.getPrecioUnitario());
         entidad.setUnidadId(obj.getUnidadId());
 
-        Producto saved=repository.save(entidad);
+        Producto saved = repository.save(entidad);
         return mapper.toDTO(saved);
     }
 

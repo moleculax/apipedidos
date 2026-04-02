@@ -1,6 +1,6 @@
 package com.menuadmin.apipedidos.exception;
 
-import com.menuadmin.apipedidos.dto.ApiResponse;
+import com.menuadmin.apipedidos.dto.WrapperResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,41 +16,41 @@ public class ErrorHandlerConfig extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> all(Exception e, WebRequest request){
-        ApiResponse<?> response = new ApiResponse<>(null, false, "Internal server error");
+        WrapperResponse<?> response = new WrapperResponse<>(null, false, "Internal server error");
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ValidateException.class)
     public ResponseEntity<?> validation(ValidateException e, WebRequest request){
-        ApiResponse<?> response = new ApiResponse<>(null, false, e.getMessage());
+        WrapperResponse<?> response = new WrapperResponse<>(null, false, e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NoDataFoundException.class)
     public ResponseEntity<?> noData(NoDataFoundException e, WebRequest request){
-        ApiResponse<?> response = new ApiResponse<>(null, false, e.getMessage());
+        WrapperResponse<?> response = new WrapperResponse<>(null, false, e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(GeneralException.class)
     public ResponseEntity<?> general(GeneralException e, WebRequest request){
-        ApiResponse<?> response = new ApiResponse<>(null, false, "Internal server error");
+        WrapperResponse<?> response = new WrapperResponse<>(null, false, "Internal server error");
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<?> handleBadCredentials(BadCredentialsException e, WebRequest request){
-        ApiResponse<?> response = new ApiResponse<>(null, false, e.getMessage());
+        WrapperResponse<?> response = new WrapperResponse<>(null, false, e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(AuthorizationDeniedException.class)
     public ResponseEntity<?> handleAuthorizedDenied(AuthorizationDeniedException e, WebRequest request){
-        ApiResponse<?> response = new ApiResponse<>(null, false, "Acceso denegado: no tiene permisos para esta acción");
+        WrapperResponse<?> response = new WrapperResponse<>(null, false, "Acceso denegado: no tiene permisos para esta acción");
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<?> handleUsernameNotFound(UsernameNotFoundException e, WebRequest request){
-        ApiResponse<?> response = new ApiResponse<>(null, false, e.getMessage());
+        WrapperResponse<?> response = new WrapperResponse<>(null, false, e.getMessage());
         return new ResponseEntity<>(response, HttpStatus. UNAUTHORIZED);
     }
 }
